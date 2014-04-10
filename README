@@ -1,6 +1,9 @@
 Spl
 ===
 
+See (here)[http://shakespearelang.sourceforge.net/report/shakespeare/] for original documentation.
+
+===
 Shakespeare Compiler written in Python, splc.py
 This is a compiler from SPL to C that implements the majority of the Shakespeare programming
 language invented by Kalle Hasselstrom and Jon Aslund, I take no credit for inventing the language.
