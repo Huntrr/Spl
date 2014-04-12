@@ -1,4 +1,6 @@
 #pyspeare
+A [Shakespeare Programming Language](http://shakespearelang.sourceforge.net/report/shakespeare/) to Python translator written in Python.
+
 by [Huntrr](https://github.com/Huntrr),
 based on [Spl](https://github.com/drsam94/Spl) by [drsam94](https://github.com/drsam94)
 
