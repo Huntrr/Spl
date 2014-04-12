@@ -126,10 +126,10 @@ def parseStatement(stat):
         return target + " = " + parseExpr(expr)
     elif trimmed == "openyourheart" or trimmed == "openthyheart":
         #numerical output
-        return 'print str(' + target + ')'
+        return 'sys.stdout.write(str(' + target + '))'
     elif trimmed == "speakyourmind" or trimmed == "speakthymind":
         #character output
-        return 'print chr(' + target + ')'
+        return 'sys.stdout.write(chr(' + target + '))'
     elif trimmed == "listentoyourheart" or trimmed == "listentothyheart":
         #numerical input
         return target + " = int(raw_input('Int: '))"
