@@ -27,9 +27,12 @@ I, also, wouldn't be too averse to credit if you happen to find a use for this p
 This compiler implements most features of the Shakespeare Programming language described at http://shakespearelang.sourceforge.net/report/shakespeare/
 
 The following features have yet to be implemented:
-* Stacks (declared, but not yet used) ('Remember me', 'Remember yourself' are pushes, and 'recall your ...', 'recall my ...' are pops)
 * Multiple-word nouns in cases where using just the last word would generate any confusion
+
+
+The following features have been implemented but still need to be tested:
 * NOT conditionals ('not as good as' or 'not bettan than' etc)
+* Stacks (declared, but not yet used) ('Remember me', 'Remember yourself' are pushes, and 'recall your ...', 'recall my ...' are pops)
 
 ===
 

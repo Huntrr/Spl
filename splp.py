@@ -144,6 +144,9 @@ def parseStatement(stat):
         left  = ""
         kind  = ""
         right = ""
+        flipped = False;
+        if statement.split(" ")[2] == "not":
+            flipped = True;
         if statement.find("as") >= 0:
             left, kind, right = statement.split(" as ")
             Assert(lang.isAdjective(kind), "Ill-formed conditional in " + statement)
@@ -167,7 +170,7 @@ def parseStatement(stat):
             Assert(len(comp) > 0, "Ill-formed conditional in " + statement)
             kind = "greater" if comp in lang.pos_comp else "lesser"
             left, right = statement.split(comp)
-        return "condition = (" + parseExpr(left) + ") " + (">" if kind == "greater" else "<" if kind == "lesser" else "==") + " (" + parseExpr(right) + ")"
+        return "condition = " + ("!" if flipped else "") + ((" + parseExpr(left) + ") " + (">" if kind == "greater" else "<" if kind == "lesser" else "==") + " (" + parseExpr(right) + "))"
     elif lang.beginsWith(statement, "if so,"):
         #positive condition
         location = statement.find("if so,")
@@ -198,6 +201,28 @@ def parseStatement(stat):
                 return getFunction(str(actnum), str(nameDict[restOfPhrase]))
             #typeword = act if type_ == "act" else ("act_" + str(actnum) + "_scene")
             #return "goto " + typeword + str(nameDict[restOfPhrase]) + ";\n"
+    elif first == "remember":
+        #push subject to target's stack
+        subject = statement.split(" ")[1]
+        if lang.isFirstPerson(subject):
+            subject = speaker
+        elif lang.isSecondPerson(subject):
+            subject = target
+        else:
+            Assert(false, "Ambiguous REMEMBER")
+            
+        return target + "_stack.append(" + subject + ")"
+    elif first == "recall":
+        #pop from subject's stack to target's var
+        subject = statement.split(" ")[1]
+        if lang.isFirstPerson(subject):
+            subject = speaker
+        elif lang.isSecondPerson(subject):
+            subject = target
+        else:
+            Assert(false, "Ambiguous RECALL")
+        
+        return target + " = " + subject + "_stack.pop()"
     else:
         return ""
 

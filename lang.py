@@ -11,11 +11,20 @@ pos_nouns  = []
 neg_nouns  = []
 valid_names= []
 zero_nouns = ['nothing', 'zero']
-        
+
+first_person = []
+second_person = []
+
 def Assert(b, s):
     if not b:
         sys.stderr.write(s + " at line " + "ERROR" + "\n")
         sys.exit(1)
+
+def isFirstPerson(s):
+    return s in first_person
+    
+def isSecondPerson(s):
+    return s in second_person
 
 def isNoun(word):
     return word in pos_nouns or word in neg_nouns or word in zero_nouns
@@ -73,6 +82,14 @@ def loadWordLists():
     loadFileIntoList("include/positive_comparative.wordlist", pos_comp)
     loadFileIntoList("include/positive_comparative.wordlist", neg_comp)
     loadFileIntoList("include/character.wordlist", valid_names)
+    
+    loadFileIntoList("include/second_person.wordlist", second_person)
+    loadFileIntoList("include/second_person_possessive.wordlist", second_person)
+    loadFileIntoList("include/second_person_reflexive.wordlist", second_person)
+    
+    loadFileIntoList("include/first_person.wordlist", first_person)
+    loadFileIntoList("include/first_person_possessive.wordlist", first_person)
+    loadFileIntoList("include/first_person_reflexive.wordlist", first_person)
 
 roman_values = { 'M': 1000, 'D': 500, 'C': 1000, 'L': 50, 'X': 10, 'V': 5, 'I': 1 }
 def parseRomanNumeral(roman_string):
