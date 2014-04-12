@@ -29,10 +29,11 @@ This compiler implements most features of the Shakespeare Programming language d
 The following features have yet to be implemented:
 * Multiple-word nouns in cases where using just the last word would generate any confusion
 
+===
 
 The following features have been implemented but still need to be tested:
 * NOT conditionals ('not as good as' or 'not bettan than' etc)
-* Stacks (declared, but not yet used) ('Remember me', 'Remember yourself' are pushes, and 'recall your ...', 'recall my ...' are pops)
+* Stacks ('Remember me', 'Remember yourself' are pushes, and 'recall your ...', 'recall my ...' are pops)
 
 ===
 

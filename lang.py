@@ -111,6 +111,24 @@ def isNumber(s):
             return True
     return False
 
+
+#parse a string that is supposed to evaluate to a number
+def safeParseNum(s):
+    words = s.split(" ")
+    nounIndex = len(words)
+    for i in range(0,len(words)):
+        if isNoun(words[i]):
+            nounIndex = i
+            break
+    if(nounIndex < len(words)):
+        value = nounValue(words[nounIndex])
+        for word in words[:nounIndex]:
+            if isAdjective(word):
+                value *= 2
+        return value
+    else:
+        return 0
+
 #parse a string that is supposed to evaluate to a number
 def parseNum(s):
     words = s.split(" ")

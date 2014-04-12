@@ -138,7 +138,7 @@ def parseStatement(stat):
         return target + " = int(raw_input())"
     elif trimmed == "openyourmind" or trimmed == "openthymind":
         #character input
-        return target + " = ord(str(raw_input())[0])"
+        return target + " = getChar()"
     elif first in ["am", "are", "art", "be", "is"]:
         #questions - do not yet support "not"
         left  = ""
@@ -170,7 +170,10 @@ def parseStatement(stat):
             Assert(len(comp) > 0, "Ill-formed conditional in " + statement)
             kind = "greater" if comp in lang.pos_comp else "lesser"
             left, right = statement.split(comp)
-        return "condition = " + ("!" if flipped else "") + ((" + parseExpr(left) + ") " + (">" if kind == "greater" else "<" if kind == "lesser" else "==") + " (" + parseExpr(right) + "))"
+        if flipped:
+            return "condition = !((" + parseExpr(left) + ") " + (">" if kind == "greater" else "<" if kind == "lesser" else "==") + " (" + parseExpr(right) + "))"
+        else:
+            return "condition = (" + parseExpr(left) + ") " + (">" if kind == "greater" else "<" if kind == "lesser" else "==") + " (" + parseExpr(right) + ")"
     elif lang.beginsWith(statement, "if so,"):
         #positive condition
         location = statement.find("if so,")
@@ -267,7 +270,7 @@ def handleDeclarations():
         Assert(commaIndex > 0, "Improper declaration " + str(declarations))
         wordsInName = lang.trimLeadingWhitespace(dec[:commaIndex]).split(" ")
         varname = wordsInName[-1]
-        value = lang.parseNum(dec[commaIndex:-2])
+        value = lang.safeParseNum(dec[commaIndex:-2])
         writeToFile(str(varname) + " = " + str(value))
         writeToFile(str(varname) + "_stack = []")
         Assert(varname in lang.valid_names, "Non-Shakespearean variable name")
