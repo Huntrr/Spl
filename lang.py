@@ -1,7 +1,7 @@
 import math
 import sys
 
-N          = 0
+
 
 pos_adj    = []
 neg_adj    = []
@@ -11,14 +11,12 @@ pos_nouns  = []
 neg_nouns  = []
 valid_names= []
 zero_nouns = ['nothing', 'zero']
-    
-#report a compile-time error, then exit
-def Assert(b, s):
-    global N
-    if not b:
-        sys.stderr.write(s + " at line " + str(N) + "\n")
-        sys.exit(1)
         
+def Assert(b, s):
+    if not b:
+        sys.stderr.write(s + " at line " + "ERROR" + "\n")
+        sys.exit(1)
+
 def isNoun(word):
     return word in pos_nouns or word in neg_nouns or word in zero_nouns
 

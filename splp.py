@@ -14,6 +14,7 @@ drsam94@gmail.com"""
 #full support for multi-word nouns/names
 #Stacks, who needs them?
 
+N          = 0
 src        = ""
 vartable   = set([])
 speaker    = ""
@@ -23,7 +24,13 @@ actnum     = 0
 act_names  = {}
 scene_names= []
 
-Assert = lang.Assert #grab Assert() function
+#report a compile-time error, then exit
+def Assert(b, s):
+    global N
+    if not b:
+        sys.stderr.write(s + " at line " + str(N) + "\n")
+        sys.exit(1)
+lang.Assert = Assert
 
 #Abstraction for writing to file, eased python 2/3 agnosticity,
 #and will eventually allow file output instead of stdout if that
@@ -178,7 +185,7 @@ def parseStatement(stat):
             return getFunction(str(lang.parseRomanNumeral(words[5])), 1)
         else:
             restOfPhrase = lang.concatWords(words[4:])
-            type_ = "scene" if restOfPhrase in scene_names[actnum].keys() 
+            type_ = "scene" if restOfPhrase in scene_names[actnum].keys() \
             else "act" if restOfPhrase in act_names.keys() else "none"
             Assert (type_ != "none", "Goto refers to nonexistant act or scene")
             nameDict = act_names if type_ == "act" else scene_names[actnum]
@@ -196,7 +203,7 @@ def getFunction(actN, sceneN):
 
 def writeScenes(scenes, isLast):
     #writeToFile("def act_" + str(actnum) + ":")
-    writeToFile("//start act " + str(actnum))
+    writeToFile("#ACT " + str(actnum))
     for j in range(0, len(scenes)):
         writeToFile("def act_" + str(actnum) + "_scene" + str(j + 1) + ":")
         writeToFile(scenes[j])
@@ -204,7 +211,7 @@ def writeScenes(scenes, isLast):
             writeToFile("\tact_" + str(actnum) + "_scene" + str(j + 2) + "()\n")
         elif not isLast:
             writeToFile("\tact_" + str(actnum + 1) + "_scene1()\n")
-    writeToFile("//end act " + str(actnum) + "\n\n")
+    #writeToFile("#END ACT " + str(actnum) + "\n\n")
     
 def handleDeclarations():
     global N
@@ -254,6 +261,12 @@ def parseAllActAndSceneDescriptions():
             current_scene += 1
             scene_names[current_act][desc] = current_scene
 
+def getMathHelpers():
+    s = ""
+    f = open("include/mathhelpers.py", 'r')
+    for line in f.readlines():
+        s += line + "\n"
+    f.close()
 
 #--------------------------------------------------------------------------#
 #                            BEGIN MAIN PROGRAM                            #
@@ -272,12 +285,18 @@ while src[N].find('.') < 0:
 N += 1
 #title is thrown out
 
-writeToFile("// " + filename + "\n" + 
-"// translated with pyspeare by Hunter Lightman, based off of splc.py (c) Sam Donow 2013-2014\n" + 
+writeToFile("#" + filename + "\n" + 
+"#translated with pyspeare by Hunter Lightman, based off of splc.py (c) Sam Donow 2013-2014\n" + 
 "import math\n" + 
-"condition = 0\n\n")
+"condition = 0\n")
+
+writeToFile("#BASIC MATH FUNCTIONS")
+writeToFile(getMathHelpers())
+
+writeToFile("\n#START OF PROGRAM\n#DECLARATIONS")
 
 handleDeclarations()
+writeToFile("\n#SCRIPT")
 parseAllActAndSceneDescriptions()
 
 scenes = []
@@ -329,4 +348,4 @@ while N < len(src):
         N += 1
 
 writeScenes(scenes, True)
-writeToFile("//fin")
+writeToFile("#fin")
