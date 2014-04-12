@@ -288,7 +288,7 @@ N += 1
 
 writeToFile("#" + filename + "\n" + 
 "#translated with pyspeare by Hunter Lightman, based off of splc.py (c) Sam Donow 2013-2014\n" + 
-"import math\n" + 
+"import math\nimport sys\n" + 
 "condition = 0\n")
 
 writeToFile("#BASIC MATH FUNCTIONS")
