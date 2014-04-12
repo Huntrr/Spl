@@ -36,6 +36,7 @@ Additionally, one feature—not in the original language spec—is implemented b
 In the original language spec, goto statements take the form "let us proceed to scene III", "let us return to act I",
 etc. As this is both awkward and non-Shakesperian, this code allows you to use the name of an act or scene (not case,
 punctuation, or whitespace sensitive) in place of a this awkward structure. Therefore, if you had
+
     Act I: The Forest.
 
 Then the sentence "let us return to the forest" is equivalent to "let us return to act I".
