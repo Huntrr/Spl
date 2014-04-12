@@ -1,0 +1,1086 @@
+<!--Copied from http://shakespearelang.sourceforge.net/report/shakespeare/ ... in case that's ever lost-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.47)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The Shakespeare Programming Language</TITLE>
+<META NAME="description" CONTENT="The Shakespeare Programming Language">
+<META NAME="keywords" CONTENT="shakespeare">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="shakespeare.css">
+
+</HEAD>
+
+<BODY >
+
+<P>
+
+<H1 ALIGN="CENTER"><FONT SIZE="+4">The Shakespeare Programming Language</FONT></H1>
+<P ALIGN="CENTER"><STRONG><FONT SIZE="+1">Karl Hasselström     
+<BR>        <FONT SIZE="+1">Jon Åslund           
+<BR></FONT></FONT></STRONG></P>
+<P ALIGN="CENTER"><STRONG>Document was last rebuilt August 21, 2001</STRONG></P>
+
+<P>
+<BR>
+
+<H2><A NAME="SECTION00010000000000000000">
+Contents</A>
+</H2>
+<!--Table of Contents-->
+
+<UL>
+<LI><A NAME="tex2html37"
+  HREF="shakespeare.html">Introduction</A>
+<LI><A NAME="tex2html38"
+  HREF="#SECTION00030000000000000000">Design Goals</A>
+<LI><A NAME="tex2html39"
+  HREF="#SECTION00040000000000000000">Hello World!</A>
+<UL>
+<LI><A NAME="tex2html40"
+  HREF="#SECTION00041000000000000000">Title</A>
+<LI><A NAME="tex2html41"
+  HREF="#SECTION00042000000000000000">Dramatis Person&#230;</A>
+<LI><A NAME="tex2html42"
+  HREF="#SECTION00043000000000000000">Acts and Scenes</A>
+<LI><A NAME="tex2html43"
+  HREF="#SECTION00044000000000000000">Enter, Exit and Exeunt</A>
+<LI><A NAME="tex2html44"
+  HREF="#SECTION00045000000000000000">Lines</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html45"
+  HREF="#SECTION00050000000000000000">A Slightly Less Trivial Example</A>
+<UL>
+<LI><A NAME="tex2html46"
+  HREF="#SECTION00051000000000000000">Input</A>
+<LI><A NAME="tex2html47"
+  HREF="#SECTION00052000000000000000">Gotos</A>
+<LI><A NAME="tex2html48"
+  HREF="#SECTION00053000000000000000">Conditional statements</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html49"
+  HREF="#SECTION00060000000000000000">A Slightly Less Trivial Example</A>
+<UL>
+<LI><A NAME="tex2html50"
+  HREF="#SECTION00061000000000000000">Stacks</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html51"
+  HREF="#SECTION00070000000000000000">How To Compile Your SPL Program</A>
+<LI><A NAME="tex2html52"
+  HREF="#SECTION00080000000000000000">How We Compiled the SPL Translator</A>
+<LI><A NAME="tex2html53"
+  HREF="#SECTION00090000000000000000">Examples</A>
+<UL>
+<LI><A NAME="tex2html54"
+  HREF="#SECTION00091000000000000000">Hello World!</A>
+<LI><A NAME="tex2html55"
+  HREF="#SECTION00092000000000000000">Primes</A>
+<LI><A NAME="tex2html56"
+  HREF="#SECTION00093000000000000000">Reverse</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html57"
+  HREF="#SECTION000100000000000000000">First contact</A>
+<LI><A NAME="tex2html58"
+  HREF="#SECTION000110000000000000000">About this document ...</A>
+</UL>
+<!--End of Table of Contents-->
+<P>
+
+<H1><A NAME="SECTION00020000000000000000">
+Introduction</A>
+</H1>
+
+<P>
+Late at night sometime in Februari, Kalle Hasselström and Jon Åslund
+(that is us, we, the authors) were sitting with a programming
+assignment due for demonstration at nine the following morning. It was
+assignment number four in our Syntax Analysis course and we were
+pretty tired with it. The last assignment, on the other hand, seemed
+like much more fun, because you were allowed to do pretty much
+whatever you wanted as long as it involved lexical and syntactical
+analysis. So instead of finishing the fourth assignment, we started
+making up some great ideas for the fifth, the kind you only conceive
+of when you really should be asleep.
+
+<P>
+A few weeks earlier we had discovered a number of truly fascinating
+programming languages, such as
+Java2k<A NAME="tex2html1"
+  HREF="#foot116"><SUP>1</SUP></A>,
+Sorted!<A NAME="tex2html2"
+  HREF="#foot117"><SUP>2</SUP></A>,
+Brainfuck<A NAME="tex2html3"
+  HREF="#foot118"><SUP>3</SUP></A> and
+Malbolge<A NAME="tex2html4"
+  HREF="#foot119"><SUP>4</SUP></A>,
+and we wanted to make our own. We have no idea why, but that night we
+were also thinking about Shakespeare in general, and Shakespearian
+insults in particular and three hours later we had come up with this
+amazing idea: the Shakespeare Programming Language, SPL.
+
+<P>
+This is the documentation of the language and how we made it.
+
+<P>
+
+<H1><A NAME="SECTION00030000000000000000">
+Design Goals</A>
+</H1>
+
+<P>
+The design goal was to make a language with beautiful source code that
+resembled Shakespeare plays. There are no fancy data or control
+structures, just basic arithmetic and gotos. You could say we have
+combined the expressiveness of BASIC with the user-friendliness of
+assembly language.
+
+<P>
+The course was about syntactic analysis, not compiler construction.
+Thus, we didn't make an SPL compiler, just an SPL to C converter. This
+proved to be fairly simple, since SPL can be translated directly to C,
+one statement at a time.
+
+<P>
+
+<H1><A NAME="SECTION00040000000000000000">
+Hello World!</A>
+</H1>
+
+<P>
+Since we don't want to break with ancient tradition, let's begin with
+a simple example: a Hello World program. Though it might seem
+otherwise, the <I>sole</I> purpose of this program is to print the
+string ``Hello World!''. It resides in the file <TT>hello.spl</TT>,
+and also in appendix <A HREF="shakespeare.html#sec:hello"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="http://www.nada.kth.se/icons/latex2html-2K.1beta/crossref.gif"></A>. If you want to run it yourself,
+consult section <A HREF="shakespeare.html#sec:myprogram"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="http://www.nada.kth.se/icons/latex2html-2K.1beta/crossref.gif"></A>.
+
+<P>
+Let's dissect the program and see how it works.
+
+<P>
+
+<H2><A NAME="SECTION00041000000000000000">
+Title</A>
+</H2>
+
+<P>
+The first line of every SPL program is the title. Or actually,
+everything up until the first period is the title, whether it's one
+line, three lines, or half a line. You're generally free to insert
+space and newlines wherever you want in the code, but we <I>urge</I>
+you to <I>please</I> indent tastefully.
+
+<P>
+The title serves only aesthetic purposes. From the parser's point of
+view, it's a comment.
+
+<P>
+
+<H2><A NAME="SECTION00042000000000000000">
+Dramatis Person&#230;</A>
+</H2>
+
+<P>
+The next few lines are a list of all characters in the play. Think of
+them as variables, capable of holding a signed integer value. You must
+declare every character you intend to use, or the program won't
+compile.
+
+<P>
+A declaration consists of a name, followed by a description of the
+character (which is ignored by the parser). You can't pick just any
+name, however; you must use a real Shakespeare character name, such as
+Romeo, Juliet, or the Ghost (Hamlet's deceased father).
+
+<P>
+
+<H2><A NAME="SECTION00043000000000000000">
+Acts and Scenes</A>
+</H2>
+
+<P>
+The purpose of acts and scenes is to divide the play into smaller
+parts. A play consists of one or more acts, each act consists of one
+or more scenes, and each scene consists of lines (where the characters
+say something) and enter and exit statements, which cause characters
+to get on and off the stage.
+
+<P>
+Acts and scenes are numbered with roman numerals. They begin with the
+word ``Act'' or ``Scene'', then the number, and then a description of
+what happens in that act or scene. Just as with the title and the
+character descriptions, these descriptions are ignored by the parser.
+
+<P>
+Besides being beautiful and descriptive, acts and scenes also serve as
+labels, which can be jumped to using goto statements. There are no
+gotos in the Hello World program, however, so we'll talk about that
+later.
+
+<P>
+
+<H2><A NAME="SECTION00044000000000000000">
+Enter, Exit and Exeunt</A>
+</H2>
+
+<P>
+To be able to speak their lines, characters must be on stage. The
+character they address as ``you'' (or ``thou'' or any other
+second-person pronoun) must also be on stage. But if there is yet
+another character on stage, it's not clear which one is intended. This
+is frowned upon by the parser.
+
+<P>
+Enter Enter and Exit<A NAME="tex2html5"
+  HREF="#foot35"><SUP>5</SUP></A>. These directives cause characters to get on
+and off stage. ``Enter'' is followed by a list of one or more
+characters. ``Exit'' is followed by exactly one character. The plural
+of Exit is ``Exeunt'', which is followed by a list of at least two
+characters - or none, in which case everyone leaves.
+
+<P>
+An Enter directive given to a character already on stage, or the other
+way around, will cause a runtime error.
+
+<P>
+
+<H2><A NAME="SECTION00045000000000000000">
+Lines</A>
+</H2>
+
+<P>
+A line consists of the name of a character, a colon, and one or more
+sentences. In the Hello World program, only two kinds of sentences are
+used: output, which causes output to the screen, and statements, which
+cause the second person to assume a certain value.
+
+<P>
+
+<H3><A NAME="SECTION00045100000000000000">
+Constants</A>
+</H3>
+
+<P>
+First, we'll explain how constants (that is, constant numbers, such as
+17 and 4711) are expressed.
+
+<P>
+Any noun is a constant with the value 1 or <IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.gif"
+ ALT="$-1$">, depending on whether
+it's nice or not. For example, ``flower'' has the value 1 because
+flowers are nice, but ``pig'' has the value <IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.gif"
+ ALT="$-1$"> because pigs are
+dirty (which doesn't prevent most people from eating them). Neutral
+nouns, such as ``tree'', count as 1 as well.
+
+<P>
+By prefixing a noun with an adjective, you multiply it by two. Another
+adjective, and it is multiplied by two again, and so on. That way, you
+can easily construct any power of two or its negation. From there,
+it's easy to construct arbitrary integers using basic arithmetic, such
+as ``the sum of <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> and <IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$Y$">'', where <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> and <IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$Y$"> are themselves
+arbitrary integers.
+
+<P>
+For example, ``the difference between the square of the difference
+between my little pony and your big hairy hound and the cube of your
+sorry little codpiece''. Substituting the simple constants with
+numbers, we get ``the difference between the square of the difference
+between 2 and 4 and the cube of -4''. Now, since the difference
+between 2 and 4 is <IMG
+ WIDTH="89" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.gif"
+ ALT="$2 - 4 = -2$">, and the cube of <IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.gif"
+ ALT="$-4$"> is <IMG
+ WIDTH="102" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.gif"
+ ALT="$(-4)^3 =
+-64$">, this is equal to ``the difference between the square of <IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$-2$"> and
+<IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$-64$">''. The square of <IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.gif"
+ ALT="$-2$"> is <IMG
+ WIDTH="80" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.gif"
+ ALT="$(-2)^2 = 4$">, and the difference of 4
+and <IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$-64$"> is 60. Thus, ``the difference between the square of the
+difference between my little pony and your big hairy hound and the
+cube of your sorry little codpiece'' means 60.
+
+<P>
+As you see, this way of writing constants gives you much more poetic
+freedom than in other programming languages.
+
+<P>
+
+<H3><A NAME="SECTION00045200000000000000">
+Assignment of Values</A>
+</H3>
+
+<P>
+Now, how do we use those numbers? Well, just have a look at the two
+statements ``You lying stupid fatherless big smelly half-witted
+coward!'' and ``You are as stupid as the difference between a handsome
+rich brave hero and thyself!''
+
+<P>
+The first one is simple: A second person pronoun, followed by a
+number. The effect of this statement is to assign the value of that
+number (in this case, <IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.gif"
+ ALT="$-64$">) to the character being spoken to. Think
+``<IMG
+ WIDTH="74" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.gif"
+ ALT="$X=-64$">''.
+
+<P>
+The second one is slightly more complicated. For starters, what is the
+value of ``thyself''? That's not a noun, that's a reflexive pronoun.
+It's value is the current value of the character being spoken to. So
+the number in the second statement is <IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.gif"
+ ALT="$8 - X$">, where <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> is the value
+of the character being spoken to. And just as you might expect from
+your experience with English, the second statement is just another
+assignment. Think ``<IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> = 8 - <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$">''. Being ``as bas as'', ``as good
+as'', or as [any adjective] as something else, means being
+<I>equal</I> to that something.
+
+<P>
+
+<H3><A NAME="SECTION00045300000000000000">
+Output</A>
+</H3>
+
+<P>
+The other kind of sentence used in the Hello World program is output.
+There are two different output sentences, ``Open your heart'' and
+``Speak your mind''. The first causes the character being spoken to to
+output her or his value in numerical form, and the other, being more
+literal, outputs the corresponding letter, digit, or other character,
+according to the character set being used by your computer.
+
+<P>
+In this program, we use only the second form. The whole program is a
+long sequence of constructing a number, writing the corresponding
+character, constructing the next number, writing the corresponding
+character, and so on.
+
+<P>
+
+<H1><A NAME="SECTION00050000000000000000">
+A Slightly Less Trivial Example</A>
+</H1>
+
+<P>
+Now for a slightly less trivial example: computing prime numbers. In
+the file <TT>primes.spl</TT>, and in appendix <A HREF="shakespeare.html#sec:primes"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="http://www.nada.kth.se/icons/latex2html-2K.1beta/crossref.gif"></A>, is a
+program that asks the user for a number, then prints all primes less
+than or equal to that number.
+
+<P>
+There are three things in this program that we havn't seen before:
+input, gotos, and conditional statements.
+
+<P>
+
+<H2><A NAME="SECTION00051000000000000000">
+Input</A>
+</H2>
+
+<P>
+The input statements work just like the output statements, except that
+they read instead of write. To read a number, as in this program, use
+the sentence ``Listen to your heart.'' To read a character, use ``Open
+your mind.'' The value will be assigned to the character being spoken
+to, as usual.
+
+<P>
+
+<H2><A NAME="SECTION00052000000000000000">
+Gotos</A>
+</H2>
+
+<P>
+A sentence like ``Let us return to scene III'' means simply ``goto
+scene III''. Instead of ``let us'', you may use ``we shall'' or ``we
+must'', and instead of ``return to'', you may use ``proceed to''. If
+you specify a scene, it refers to that scene in the current act. There
+is no way to refer to a specific scene in another act - you have to
+settle for jumping to the act itself.
+
+<P>
+
+<H2><A NAME="SECTION00053000000000000000">
+Conditional statements</A>
+</H2>
+
+<P>
+Conditional statements come in two easy steps, as illustrated by the
+following code fragment:
+
+<P>
+<PRE>
+Juliet:
+ Am I better than you?
+
+Hamlet:
+ If so, let us proceed to scene III.
+</PRE>
+
+<P>
+First, someone voices a question. This is some sort of comparison,
+which will be either true or false. But more on that later.
+
+<P>
+Then comes, at some later point, a conditional statement. This is
+constructed by putting either ``if so'' (or ``if not'') and a comma in
+front of any sentence - that sentence is only executed if the
+answer to the last question was yes (or no).
+
+<P>
+This is pretty much like how you would do conditional jumps and things
+in many assembly languages.
+
+<P>
+
+<H3><A NAME="SECTION00053100000000000000">
+Comparisons</A>
+</H3>
+
+<P>
+Comparisons are constructed the way you would expect: ``is <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> as good
+as <IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$Y$">'' tests for equality, with <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> and <IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$Y$"> being arbitrary values.
+You may substitute ``good'' with any adjective. ``is <IMG
+ WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.gif"
+ ALT="$X$"> better than
+<IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.gif"
+ ALT="$Y$">'' tests if <IMG
+ WIDTH="58" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.gif"
+ ALT="$X &gt; Y$">. This works for any positive comparative. If
+you want to test whether <IMG
+ WIDTH="58" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.gif"
+ ALT="$X &lt; Y$">, use a negative comparative, such as
+``worse''.
+
+<P>
+If you want to invert the test, say ``not as good as'' or ``not better
+than''.
+
+<P>
+
+<H1><A NAME="SECTION00060000000000000000">
+A Slightly Less Trivial Example</A>
+</H1>
+
+<P>
+One might almost say that the language described this far ought to be
+able to do anything that can be done with other programming languages,
+albeit more flowery, were it not for the fact that the storage
+capacity is severely limited. There are only so many Shakespeare
+characters (some one hundred of them are recognized by the parser),
+and each of them can only store an integer of finite size. Thus the
+storage capacity is finite, and it follows that SPL can only handle
+problems of finite size.
+
+<P>
+Realizing this, we added stacks to the language. We'll describe them
+in just a minute; but first, have a look at how they can be used. The
+program in the file <TT>reverse.spl</TT> - which can also be found in
+appendix <A HREF="shakespeare.html#sec:reverse"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="http://www.nada.kth.se/icons/latex2html-2K.1beta/crossref.gif"></A> - reads any number of characters, and then
+spits them out again in reverse order.
+
+<P>
+
+<H2><A NAME="SECTION00061000000000000000">
+Stacks</A>
+</H2>
+
+<P>
+Characters in the Shakespeare Programming Language are not
+simple-minded, limited to remember just one number. Like normal
+people, they can actually remember several. In accord with modern,
+highly experimental psychological research, this is implemented with
+stacks.
+
+<P>
+Every character can push integers onto their memory, and pop them out
+again at a later time. Pushing is done like this: 
+
+<P>
+<PRE>
+Lady Macbeth:
+ Remember me.
+</PRE>
+
+<P>
+This of course causes whoever Lady Macbeth is speaking to to push the
+value of Lady Macbeth onto his or her stack. Popping is even simpler:
+
+<P>
+<PRE>
+Lady Macbeth:
+ Recall your imminent death!
+</PRE>
+
+<P>
+The only significant word here is ``recall''; everything that follows
+is artistic fluff. This piece of code causes whoever Lady Macbeth is
+speaking to to pop an integer from his or her stack and assume that
+value for him- or herself.
+
+<P>
+Trying to pop when the stack is empty is a sure sign that the author
+has not yet perfected her storytelling skills, and will severly
+disappoint the runtime system.
+
+<P>
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="sec:myprogram"></A>
+<BR>
+How To Compile Your SPL Program
+</H1>
+
+<P>
+There is no SPL compiler. We do encourage you to write one, but at
+present there is only a translator, which translates SPL to C. The C
+file is then compiled and linked the usual way.
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER"><A NAME="fig:makehello"></A><A NAME="69"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+Flow chart of how SPL programs are compiled.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $\includegraphics[width=1.0\textwidth]{makehello.eps}$
+ -->
+<IMG
+ WIDTH="551" HEIGHT="85" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.gif"
+ ALT="\includegraphics[width=1.0\textwidth]{makehello.eps}">
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+
+<P>
+The entire process is visualized in figure <A HREF="shakespeare.html#fig:makehello"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="http://www.nada.kth.se/icons/latex2html-2K.1beta/crossref.gif"></A>. There
+are two things to note. First, <TT>spl2c</TT> reads from <TT>stdin</TT>
+and writes to <TT>stdout</TT>, so to accomplish what you see in the
+figure, you would write <TT>spl2c &lt; hello.spl &gt; hello.c</TT>. Second,
+the object file must be linked with the library <TT>libspl.a</TT>, which
+contains such stuff as dreams are made on.
+
+<P>
+
+<H1><A NAME="SECTION00080000000000000000">
+How We Compiled the SPL Translator</A>
+</H1>
+
+<P>
+The SPL to C translator was built using
+Flex<A NAME="tex2html7"
+  HREF="#foot120"><SUP>6</SUP></A> and
+Bison<A NAME="tex2html8"
+  HREF="#foot121"><SUP>7</SUP></A>. Flex creates
+a lexical analyzer, which eats source code and spits out tokens. Bison
+creates a parser that builds a parse tree out of these tokens,
+whereupon it is converted to C code.
+
+<P>
+We did not write the lexical analyzer specification by hand, since it
+contains a large number of very simple, very similar statements.
+Instead, we wrote a small program to do it for us.
+
+<P>
+The lexical analyzer and the parser are linked into the same
+executable, along with some string manipulation utilities that the
+parser uses a lot.
+
+<P>
+Last, we also build a library containing all the functions used in the
+C files generated by the translator.
+
+<P>
+
+<P></P>
+<DIV ALIGN="CENTER"><A NAME="fig:makespl"></A><A NAME="85"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+Flow chart of how the SPL translator is compiled.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $\includegraphics[width=1.0\textwidth]{makespl.eps}$
+ -->
+<IMG
+ WIDTH="543" HEIGHT="400" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.gif"
+ ALT="\includegraphics[width=1.0\textwidth]{makespl.eps}">
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+
+<P>
+Figure <A HREF="shakespeare.html#fig:makespl"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="http://www.nada.kth.se/icons/latex2html-2K.1beta/crossref.gif"></A> depicts the build process. <TT>makescanner</TT>
+is the program that creates the lexical analyzer specification
+(<TT>scanner.l</TT>). It reads a number of word list files, which list
+all SPL certified nouns, adjectives, character names, and so on.
+
+<P>
+
+<P>
+
+<H1><A NAME="SECTION00090000000000000000">
+Examples</A>
+</H1>
+
+<H2><A NAME="SECTION00091000000000000000"></A>
+<A NAME="sec:hello"></A>
+<BR>
+Hello World!
+</H2>
+
+<P>
+(This is the contents of the file <TT>hello.spl</TT>.)
+
+<P>
+<BR>
+<PRE>The Infamous Hello World Program.
+
+Romeo, a young man with a remarkable patience.
+Juliet, a likewise young woman of remarkable grace.
+Ophelia, a remarkable woman much in dispute with Hamlet.
+Hamlet, the flatterer of Andersen Insulting A/S.
+
+
+                    Act I: Hamlet's insults and flattery.
+
+                    Scene I: The insulting of Romeo.
+
+[Enter Hamlet and Romeo]
+
+Hamlet:
+ You lying stupid fatherless big smelly half-witted coward!
+ You are as stupid as the difference between a handsome rich brave
+ hero and thyself! Speak your mind!
+
+ You are as brave as the sum of your fat little stuffed misused dusty
+ old rotten codpiece and a beautiful fair warm peaceful sunny summer's
+ day. You are as healthy as the difference between the sum of the
+ sweetest reddest rose and my father and yourself! Speak your mind!
+
+ You are as cowardly as the sum of yourself and the difference
+ between a big mighty proud kingdom and a horse. Speak your mind.
+
+ Speak your mind!
+
+[Exit Romeo]
+
+                    Scene II: The praising of Juliet.
+
+[Enter Juliet]
+
+Hamlet:
+ Thou art as sweet as the sum of the sum of Romeo and his horse and his
+ black cat! Speak thy mind!
+
+[Exit Juliet]
+
+                    Scene III: The praising of Ophelia.
+
+[Enter Ophelia]
+
+Hamlet:
+ Thou art as lovely as the product of a large rural town and my amazing
+ bottomless embroidered purse. Speak thy mind!
+
+ Thou art as loving as the product of the bluest clearest sweetest sky
+ and the sum of a squirrel and a white horse. Thou art as beautiful as
+ the difference between Juliet and thyself. Speak thy mind!
+
+[Exeunt Ophelia and Hamlet]
+
+
+                    Act II: Behind Hamlet's back.
+
+                    Scene I: Romeo and Juliet's conversation.
+
+[Enter Romeo and Juliet]
+
+Romeo:
+ Speak your mind. You are as worried as the sum of yourself and the
+ difference between my small smooth hamster and my nose. Speak your
+ mind!
+
+Juliet:
+ Speak YOUR mind! You are as bad as Hamlet! You are as small as the
+ difference between the square of the difference between my little pony
+ and your big hairy hound and the cube of your sorry little
+ codpiece. Speak your mind!
+
+[Exit Romeo]
+
+                    Scene II: Juliet and Ophelia's conversation.
+
+[Enter Ophelia]
+
+Juliet:
+ Thou art as good as the quotient between Romeo and the sum of a small
+ furry animal and a leech. Speak your mind!
+
+Ophelia:
+ Thou art as disgusting as the quotient between Romeo and twice the
+ difference between a mistletoe and an oozing infected blister! Speak
+ your mind!
+
+[Exeunt]
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION00092000000000000000"></A>
+<A NAME="sec:primes"></A>
+<BR>
+Primes
+</H2>
+
+<P>
+(This is the contents of the file <TT>primes.spl</TT>.)
+
+<P>
+<BR>
+<PRE>Prime Number Computation in Copenhagen.
+
+Romeo, a young man of Verona.
+Juliet, a young woman.
+Hamlet, a temporary variable from Denmark.
+The Ghost, a limiting factor (and by a remarkable coincidence also
+        Hamlet's father).
+
+
+                    Act I: Interview with the other side.
+
+                    Scene I: At the last hour before dawn.
+
+[Enter the Ghost and Juliet]
+
+The Ghost:
+ You pretty little warm thing! Thou art as prompt as the difference
+ between the square of thyself and your golden hair. Speak your mind.
+
+Juliet:
+ Listen to your heart!
+
+[Exit the Ghost]
+
+[Enter Romeo]
+
+Juliet:
+ Thou art as sweet as a sunny summer's day!
+
+
+                    Act II: Determining divisibility.
+
+                    Scene I: A private conversation.
+
+Juliet:
+ Art thou more cunning than the Ghost?
+
+Romeo:
+ If so, let us proceed to scene V.
+
+[Exit Romeo]
+
+[Enter Hamlet]
+
+Juliet:
+ You are as villainous as the square root of Romeo!
+
+Hamlet:
+ You are as lovely as a red rose.
+
+                    Scene II: Questions and the consequences thereof.
+
+Juliet:
+ Am I better than you?
+
+Hamlet:
+ If so, let us proceed to scene III.
+
+Juliet:
+ Is the remainder of the quotient between Romeo and me as good as
+ nothing?
+
+Hamlet:
+ If so, let us proceed to scene IV.
+ Thou art as bold as the sum of thyself and a roman.
+
+Juliet:
+ Let us return to scene II.
+
+                    Scene III: Romeo must die!
+
+[Exit Hamlet]
+
+[Enter Romeo]
+
+Juliet:
+ Open your heart.
+
+[Exit Juliet]
+
+[Enter Hamlet]
+
+Romeo:
+ Thou art as rotten as the difference between nothing and the sum of a
+ snotty stinking half-witted hog and a small toad!
+ Speak your mind!
+
+[Exit Romeo]
+
+[Enter Juliet]
+
+                    Scene IV: One small dog at a time.
+
+[Exit Hamlet]
+
+[Enter Romeo]
+
+Juliet:
+ Thou art as handsome as the sum of thyself and my chihuahua!
+ Let us return to scene I.
+
+                    Scene V: Fin.
+
+[Exeunt]
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION00093000000000000000"></A>
+<A NAME="sec:reverse"></A>
+<BR>
+Reverse
+</H2>
+
+<P>
+(This is the contents of the file <TT>reverse.spl</TT>.)
+
+<P>
+<BR>
+<PRE>Outputting Input Reversedly.
+
+Othello, a stacky man.
+Lady Macbeth, who pushes him around till he pops.
+
+
+                    Act I: The one and only.
+
+                    Scene I: In the beginning, there was nothing.
+
+[Enter Othello and Lady Macbeth]
+
+Othello:
+ You are nothing!
+
+                    Scene II: Pushing to the very end.
+
+Lady Macbeth:
+ Open your mind! Remember yourself.
+
+Othello:
+ You are as hard as the sum of yourself and a stone wall. Am I as
+ horrid as a flirt-gill?
+
+Lady Macbeth:
+ If not, let us return to scene II. Recall your imminent death!
+
+Othello:
+ You are as small as the difference between yourself and a hair!
+
+                    Scene III: Once you pop, you can't stop!
+
+Lady Macbeth:
+ Recall your unhappy childhood. Speak your mind!
+
+Othello:
+ You are as vile as the sum of yourself and a toad! Are you better
+ than nothing?
+
+Lady Macbeth:
+ If so, let us return to scene III.
+
+                    Scene IV: The end.
+
+[Exeunt]
+</PRE>
+
+<P>
+
+<H1><A NAME="SECTION000100000000000000000">
+First contact</A>
+</H1>
+
+<P>
+In order to make first contact with the authors, you may find the
+addresses d98-jas@nada.kth.se and d98-kha@nada.kth.seuseful. Mail posted to them will reach Jon and Karl, respectively.
+
+<P>
+We appreciate <I>any</I> feedback - even if all we get is an
+extensive collection of four-letter words, at least we know
+<I>someone</I> loves us.
+
+<P>
+The Shakespeare Programming Language has its own WikiWikiWeb at
+http://www.d.kth.se/~d98-kha/shakespeare/. You may find all
+sorts of fascinating information there, including this document and
+the <TT>spl2c</TT> translator, complete with source code!
+
+<P>
+
+<H1><A NAME="SECTION000110000000000000000">
+About this document ...</A>
+</H1>
+ <STRONG><FONT SIZE="+4">The Shakespeare Programming Language</FONT></STRONG><P>
+This document was generated using the
+<A HREF="http://www-dsed.llnl.gov/files/programs/unix/latex2html/manual/"><STRONG>LaTeX</STRONG>2<tt>HTML</tt></A> translator Version 2K.1beta (1.47)
+<P>
+Copyright &#169; 1993, 1994, 1995, 1996,
+<A HREF="http://cbl.leeds.ac.uk/nikos/personal.html">Nikos Drakos</A>, 
+Computer Based Learning Unit, University of Leeds.
+<BR>
+Copyright &#169; 1997, 1998, 1999,
+<A HREF="http://www.maths.mq.edu.au/~ross/">Ross Moore</A>, 
+Mathematics Department, Macquarie University, Sydney.
+<P>
+The command line arguments were: <BR>
+ <STRONG>latex2html</STRONG> <TT>-dir shakespeare -no_navigation -split 0 shakespeare.tex</TT>
+<P>
+The translation was initiated by Karl Hasselström on 2001-08-21
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot116">...
+Java2k</A><A NAME="foot116"
+ HREF="shakespeare.html#tex2html1"><SUP>1</SUP></A>
+<DD>http://www.p-nand-q.com/java2k.htm
+
+<DT><A NAME="foot117">...
+Sorted!</A><A NAME="foot117"
+ HREF="shakespeare.html#tex2html2"><SUP>2</SUP></A>
+<DD>http://www.p-nand-q.com/sorted.htm
+
+<DT><A NAME="foot118">...
+Brainfuck</A><A NAME="foot118"
+ HREF="shakespeare.html#tex2html3"><SUP>3</SUP></A>
+<DD>http://www.catseye.mb.ca/esoteric/bf/
+
+<DT><A NAME="foot119">...
+Malbolge</A><A NAME="foot119"
+ HREF="shakespeare.html#tex2html4"><SUP>4</SUP></A>
+<DD>http://www.mines.edu/students/b/bolmstea/malbolge/
+
+<DT><A NAME="foot35">... Exit</A><A NAME="foot35"
+ HREF="shakespeare.html#tex2html5"><SUP>5</SUP></A>
+<DD>If you don't get the joke, you can mail
+  the authors and ask.
+
+<DT><A NAME="foot120">...
+Flex</A><A NAME="foot120"
+ HREF="shakespeare.html#tex2html7"><SUP>6</SUP></A>
+<DD>http://www.gnu.org/software/flex/
+
+<DT><A NAME="foot121">...
+Bison</A><A NAME="foot121"
+ HREF="shakespeare.html#tex2html8"><SUP>7</SUP></A>
+<DD>http://www.gnu.org/software/bison/
+
+</DL>
+<BR><HR>
+<ADDRESS>
+Karl Hasselström
+2001-08-21
+</ADDRESS>
+</BODY>
+</HTML>

@@ -59,6 +59,8 @@ def parseEnterOrExit():
     elif lang.beginsWithNoWhitespace(enterOrExit, "Exeunt"):
         if enterOrExit.find(" ") == -1:
             stage = set([])
+            #exit the program
+            return True
         else: 
             names = enterOrExit[enterOrExit.find(" ") + 1:].split(" and ")
             for namestr in names:
@@ -67,6 +69,7 @@ def parseEnterOrExit():
                 stage.remove(name)
     else:
         Assert(False, "Bracketed clause without Enter, Exit, or Exeunt")
+    return False
 
 #returns an array of the punctuation-delimited statements at the current location in the parsing
 def getStatements():
@@ -103,10 +106,10 @@ def TreeToString(tree):
         return str(tree.value)
     elif tree.right == "":
         #unary operator
-        return str(tree.value) + "(" + TreeToString(tree.left) + ")"
+        return "int(" + str(tree.value) + "(" + TreeToString(tree.left) + "))"
     else:
         #binary operator
-        return "(" + TreeToString(tree.left) + " " + str(tree.value) + " " + TreeToString(tree.right) + ")"
+        return "int((" + TreeToString(tree.left) + " " + str(tree.value) + " " + TreeToString(tree.right) + "))"
 
 def parseExpr(expr):
     tree = lang.buildExpressionTree(expr.split(" "), target, speaker, vartable)[0]
@@ -132,10 +135,10 @@ def parseStatement(stat):
         return 'sys.stdout.write(chr(' + target + '))'
     elif trimmed == "listentoyourheart" or trimmed == "listentothyheart":
         #numerical input
-        return target + " = int(raw_input('Int: '))"
+        return target + " = int(raw_input())"
     elif trimmed == "openyourmind" or trimmed == "openthymind":
         #character input
-        return target + " = ord(str(raw_input('Chr: '))[0])"
+        return target + " = ord(str(raw_input())[0])"
     elif first in ["am", "are", "art", "be", "is"]:
         #questions - do not yet support "not"
         left  = ""
@@ -206,7 +209,11 @@ def writeScenes(scenes, isLast):
     writeToFile("#ACT " + str(actnum))
     for j in range(0, len(scenes)):
         writeToFile("def act_" + str(actnum) + "_scene" + str(j + 1) + "():")
-        writeToFile(scenes[j])
+        writeToFile("\t" + getGlobals())
+        if(scenes[j][0] == "\n"):
+            writeToFile(scenes[j][1:])
+        else:
+            writeToFile(scenes[j])
         if j < len(scenes) - 1:
             writeToFile("\tact_" + str(actnum) + "_scene" + str(j + 2) + "()\n")
         elif not isLast:
@@ -269,6 +276,13 @@ def getMathHelpers():
     f.close()
     return s
 
+def getGlobals():
+    s = "global "
+    for var in vartable:
+        s += var + ", "
+    return s[:-2]
+    
+
 #--------------------------------------------------------------------------#
 #                            BEGIN MAIN PROGRAM                            #
 #--------------------------------------------------------------------------#
@@ -319,7 +333,8 @@ while N < len(src):
         target  = ""
         while (N < len(src)) and not (lang.beginsWithNoWhitespace(src[N], 'Scene') or lang.beginsWithNoWhitespace(src[N], 'Act')):
             if lang.beginsWithNoWhitespace(src[N], '['):
-                parseEnterOrExit()
+                if parseEnterOrExit():
+                    scenes.append("\tsys.exit()")
                 if not unfinished:
                     scenes.append("\n")
                     unfinished = True

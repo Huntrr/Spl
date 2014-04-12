@@ -142,7 +142,7 @@ def buildExpressionTree(expr, target, speaker, vartable):
     Assert (len(expr) > 0, "Ill-formed Expression in " + str(expr))
     if expr[0] == "square":
         if expr[1] == "root":
-            op = "(int)sqrt"
+            op = "math.sqrt"
             expr = expr[2:]
             num, expr = buildExpressionTree(expr, target, speaker, vartable)
             return Tree(op, num, ""), expr

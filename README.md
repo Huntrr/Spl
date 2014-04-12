@@ -21,24 +21,10 @@ I, also, wouldn't be too averse to credit if you happen to find a use for this p
 This compiler implements most features of the Shakespeare Programming language described at
 http://shakespearelang.sourceforge.net/report/shakespeare/
 
-The list of implemented features is as follows: (note, this list is inaccurate for the ->Python version)
-- Character based variable (variables need be named after Shakespeare characters)
-- Acts for dividing sections of code
-- Scenes to serve as labels
-- Stage manipulation (entering and exiting various characters via Enter, Exit, and Exuent)
-- Support for noun-adjective based constants
-- Variable assignment with "you" and "you are as <adjective> as"
-- Natural language math ("the difference between the square of the sum of ..."
-- Output ("open your heart" for numbers, "speak your mind" for ASCII output)
-- Input ("listen to your heart" and "open your mind")
-- Goto statements (returning to acts or scenes)
-- Conditionals ("is X nicer than Y" vs "is X uglier than Y" followed by "if so" or "if not")
-
-
 The following features have yet to be implemented:
-- Stacks (because who needs data structures in Shakespeare, really?)
+- Stacks (declared, but not yet used) ('Remember me', 'Remember yourself' are pushes, and 'recall your ...', 'recall my ...' are pops
 - Multiple-word nouns in cases where using just the last word would generate any confusion
-- NOT conditionals (necessary?)
+- NOT conditionals ('not as good as' or 'not bettan than' etc)
 
 ===
 
