@@ -1,24 +1,34 @@
 #pyspeare
-===
 
 See [here](http://shakespearelang.sourceforge.net/report/shakespeare/) for original documentation.
 
 ===
+
+##Overview
 
 pyspeare is an extension of Sam Donow's splc.py Shakespeare to C translator that translates Shakespeare Language code to Python. 
 The Shakespeare Programming Language, SPL, was originally invented by Kalle Hasselstrom and Jon Aslund, I take no credit for 
 inventing the language nor do I take any credit for the original SPL to C translator.
 
 This software is free to edit or use, though Sam Donow wouldn't mind credit if you do happen to use it.
+
 (c) Sam Donow 2013
+
 sad3@williams.edu
+
 drsam94@gmail.com.
 
+
 I, also, wouldn't be too averse to credit if you happen to find a use for this project.
+
 (c) Hunter Lightman 2014
+
 me@hunterlightman.com
 
+
 === 
+
+##Progress
 
 This compiler implements most features of the Shakespeare Programming language described at
 http://shakespearelang.sourceforge.net/report/shakespeare/
@@ -55,6 +65,8 @@ Then the sentence "let us return to the forest" is equivalent to "let us return 
 Like standard gotos, you can not jump to a scene within an act other than the one you are currently in.
 
 ===
+
+##Usage instructions
 
 To use spl, simply run
 
