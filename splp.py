@@ -59,8 +59,6 @@ def parseEnterOrExit():
     elif lang.beginsWithNoWhitespace(enterOrExit, "Exeunt"):
         if enterOrExit.find(" ") == -1:
             stage = set([])
-            #exit the program
-            return True
         else: 
             names = enterOrExit[enterOrExit.find(" ") + 1:].split(" and ")
             for namestr in names:
@@ -69,7 +67,6 @@ def parseEnterOrExit():
                 stage.remove(name)
     else:
         Assert(False, "Bracketed clause without Enter, Exit, or Exeunt")
-    return False
 
 #returns an array of the punctuation-delimited statements at the current location in the parsing
 def getStatements():
@@ -212,7 +209,7 @@ def parseStatement(stat):
         elif lang.isSecondPerson(subject):
             subject = target
         else:
-            Assert(false, "Ambiguous REMEMBER")
+            Assert(False, "Ambiguous REMEMBER")
             
         return target + "_stack.append(" + subject + ")"
     elif first == "recall":
@@ -223,7 +220,8 @@ def parseStatement(stat):
         elif lang.isSecondPerson(subject):
             subject = target
         else:
-            Assert(false, "Ambiguous RECALL")
+            #default subject is YOU/target
+            subject = target
         
         return target + " = " + subject + "_stack.pop()"
     else:
@@ -361,8 +359,7 @@ while N < len(src):
         target  = ""
         while (N < len(src)) and not (lang.beginsWithNoWhitespace(src[N], 'Scene') or lang.beginsWithNoWhitespace(src[N], 'Act')):
             if lang.beginsWithNoWhitespace(src[N], '['):
-                if parseEnterOrExit():
-                    scenes.append("\tsys.exit()")
+                parseEnterOrExit()
                 if not unfinished:
                     scenes.append("\n")
                     unfinished = True
@@ -392,4 +389,4 @@ while N < len(src):
         N += 1
 
 writeScenes(scenes, True)
-writeToFile("act_1_scene1()\n#FIN")
+writeToFile("\tsys.exit()\n\nact_1_scene1()\n#FIN")

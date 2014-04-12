@@ -80,7 +80,7 @@ def loadWordLists():
     loadFileIntoList("include/neutral_noun.wordlist" , pos_nouns)
     loadFileIntoList("include/negative_noun.wordlist", neg_nouns)
     loadFileIntoList("include/positive_comparative.wordlist", pos_comp)
-    loadFileIntoList("include/positive_comparative.wordlist", neg_comp)
+    loadFileIntoList("include/negative_comparative.wordlist", neg_comp)
     loadFileIntoList("include/character.wordlist", valid_names)
     
     loadFileIntoList("include/second_person.wordlist", second_person)
