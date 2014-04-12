@@ -202,10 +202,10 @@ def getFunction(actN, sceneN):
     return "act_" + actN + "_scene" + sceneN + "()"
 
 def writeScenes(scenes, isLast):
-    #writeToFile("def act_" + str(actnum) + ":")
+    #writeToFile("def act_" + str(actnum) + "():")
     writeToFile("#ACT " + str(actnum))
     for j in range(0, len(scenes)):
-        writeToFile("def act_" + str(actnum) + "_scene" + str(j + 1) + ":")
+        writeToFile("def act_" + str(actnum) + "_scene" + str(j + 1) + "():")
         writeToFile(scenes[j])
         if j < len(scenes) - 1:
             writeToFile("\tact_" + str(actnum) + "_scene" + str(j + 2) + "()\n")
@@ -265,8 +265,9 @@ def getMathHelpers():
     s = ""
     f = open("include/mathhelpers.py", 'r')
     for line in f.readlines():
-        s += line + "\n"
+        s += line
     f.close()
+    return s
 
 #--------------------------------------------------------------------------#
 #                            BEGIN MAIN PROGRAM                            #
@@ -348,4 +349,4 @@ while N < len(src):
         N += 1
 
 writeScenes(scenes, True)
-writeToFile("#fin")
+writeToFile("act_1_scene1()\n#FIN")
