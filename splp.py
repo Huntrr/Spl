@@ -203,27 +203,28 @@ def parseStatement(stat):
             #return "goto " + typeword + str(nameDict[restOfPhrase]) + ";\n"
     elif first == "remember":
         #push subject to target's stack
-        subject = statement.split(" ")[1]
-        if lang.isFirstPerson(subject):
-            subject = speaker
-        elif lang.isSecondPerson(subject):
-            subject = target
-        else:
-            Assert(False, "Ambiguous REMEMBER")
+        subjects = statement.split(" ")[1:]
+        finalSubj = speaker #default to speaker with just a "REMEMBER!" statement
+        for subject in subjects:
+            if lang.isSecondPerson(subject):
+                finalSubj = target
+                break
+            elif lang.isFirstPerson(subject):
+                break
             
-        return target + "_stack.append(" + subject + ")"
+        return target + "_stack.append(" + finalSubj + ")"
     elif first == "recall":
         #pop from subject's stack to target's var
-        subject = statement.split(" ")[1]
-        if lang.isFirstPerson(subject):
-            subject = speaker
-        elif lang.isSecondPerson(subject):
-            subject = target
-        else:
-            #default subject is YOU/target
-            subject = target
+        subjects = statement.split(" ")[1:]
+        finalSubj = target #default to target with just a "RECALL!" statement
+        for subject in subjects:
+            if lang.isFirstPerson(subject):
+                finalSubj = speaker
+                break
+            elif lang.isSecondPerson(subject):
+                break
         
-        return target + " = " + subject + "_stack.pop()"
+        return target + " = " + finalSubj + "_stack.pop()"
     else:
         return ""
 
