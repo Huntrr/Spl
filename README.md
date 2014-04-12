@@ -14,7 +14,9 @@ drsam94@gmail.com.
 
 
 
-I, also, wouldn't be too averse to credit if you happen to find a use for this project. (c) Hunter Lightman 2014
+I, also, wouldn't be too averse to credit if you happen to find a use for this project. 
+(c) Hunter Lightman 2014 
+git.huntrr@gmail.com
 
 
 ##Progress
